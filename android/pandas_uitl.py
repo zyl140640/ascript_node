@@ -2,9 +2,15 @@ import pandas as pd
 
 
 class PandasHandler:
-    def __init__(self, file_path):
+    def __init__(self):
         """
-        类初始化方法，读取 Excel 文件并存储在 DataFrame 中。
+        类初始化方法。
+        """
+        self.df = None
+
+    def load_excel(self, file_path):
+        """
+        读取 Excel 文件。
 
         参数：
             file_path (str): Excel 文件路径。

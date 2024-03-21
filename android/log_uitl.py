@@ -19,3 +19,6 @@ def setup_logging(log_file=None, level=logging.INFO):
         logger.addHandler(console_handler)
 
     return logger
+
+
+init_logging = setup_logging()

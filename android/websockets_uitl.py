@@ -2,16 +2,17 @@ import websocket
 
 
 class WebSocketClient:
-    def __init__(self, url):
+    def __init__(self):
         self.ws = websocket.WebSocket()
-        self.url = url
 
     def __enter__(self):
-        try:
-            self.ws.connect(self.url)
-        except Exception as e:
-            print(f"连接 {self.url} 失败。错误: {str(e)}")
         return self
+
+    def connect(self, url):
+        try:
+            self.ws.connect(url)
+        except Exception as e:
+            print(f"连接 {url} 失败。错误: {str(e)}")
 
     def send(self, message):
         try:
@@ -27,5 +28,3 @@ class WebSocketClient:
 
     def __exit__(self, type, value, traceback):
         self.ws.close()
-
-

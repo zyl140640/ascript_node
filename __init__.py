@@ -11,55 +11,49 @@ from ascript.android import node
 # 导入图色检索模块
 from ascript.android import screen
 
-
-def page():
-    try:
-        from .android.AirScriptPage import AirScriptPages
-        return AirScriptPages()
-    except Exception as e:
-        print(f"AirScriptPages未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
-def mysql(params):
-    try:
-        from .android.mysql_uitl import MySQLHelper
-        return MySQLHelper(params)
-    except Exception as e:
-        print(f"pymysql未安装未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
-def excel(filename):
-    try:
-        from .android.excel_uitl import ExcelHelper
-        return ExcelHelper(filename)
-    except Exception as e:
-        print(f"openpyxl未安装未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
-def pandas_excel(filename):
-    try:
-        from .android.pandas_uitl import PandasHandler
-        return PandasHandler(filename)
-    except Exception as e:
-        print(f"pandas未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
-def message_sender():
-    try:
-        from .android.email_uitl import MessageSender
-        return MessageSender()
-    except Exception as e:
-        print(f"smtplib未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
-def webSocket_client(url):
-    try:
-        from .android.websockets_uitl import WebSocketClient
-        return WebSocketClient(url)
-    except Exception as e:
-        print(f"websockets未安装,请使用 pip 安装它,报错详细内容{e}")
-
-
 print("------欢迎使用ascript-node------")
 print("------目前版本为测试版------")
 print("------有好的封装提议请加QQ: 782045011------")
+print("------依赖包检查------")
+
+try:
+    from .android.AirScriptPage import AirScriptPages
+
+    page = AirScriptPages()
+except Exception as e:
+    print(f"AirScriptPages未安装,请使用 pip 安装它,报错详细内容{e}")
+
+try:
+    from .android.mysql_uitl import MySQLHelper
+
+    mysql = MySQLHelper()
+except Exception as e:
+    print(f"pymysql未安装未安装,请使用 pip 安装它,报错详细内容{e}")
+
+try:
+    from .android.excel_uitl import ExcelHelper
+
+    excel = ExcelHelper()
+except Exception as e:
+    print(f"openpyxl未安装未安装,请使用 pip 安装它,报错详细内容{e}")
+
+try:
+    from .android.pandas_uitl import PandasHandler
+
+    pandas_excel = PandasHandler()
+except Exception as e:
+    print(f"pandas未安装,请使用 pip 安装它,报错详细内容{e}")
+
+try:
+    from .android.email_uitl import MessageSender
+
+    message_sender = MessageSender()
+except Exception as e:
+    print(f"smtplib未安装,请使用 pip 安装它,报错详细内容{e}")
+
+try:
+    from .android.websockets_uitl import WebSocketClient
+
+    webSockets = WebSocketClient()
+except Exception as e:
+    print(f"websockets未安装,请使用 pip 安装它,报错详细内容{e}")

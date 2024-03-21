@@ -1,10 +1,18 @@
 import openpyxl
-from .log_uitl import setup_logging
+from .log_uitl import *
 
 
 class ExcelHelper:
-    def __init__(self, filename):
-        self.logger = setup_logging()
+    def __init__(self):
+        self.workbook = None
+        self.logger = init_logging
+
+    def load_workbook(self, filename):
+        """
+        加载工作簿
+
+        :param filename: 工作簿文件路径
+        """
         self.logger.info(f'从 {filename} 加载工作簿')
         self.workbook = openpyxl.load_workbook(filename)
 

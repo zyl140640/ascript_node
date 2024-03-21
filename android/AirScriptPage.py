@@ -2,7 +2,7 @@ import random
 import time
 from ascript.android import action
 from ascript.android import system
-from .log_uitl import setup_logging
+from .log_uitl import *
 
 
 class AirScriptPages:
@@ -10,7 +10,7 @@ class AirScriptPages:
         self.system = system
         self.node = None
         self.result = None
-        self.logger = setup_logging()
+        self.logger = init_logging
 
     def open_app(self, app_name):
         """

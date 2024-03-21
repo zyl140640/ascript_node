@@ -1,29 +1,23 @@
 import pymysql
 
-from .log_uitl import setup_logging
+from .log_uitl import *
 
 
 class MySQLHelper:
-    def __init__(self, params):
-        self.host = params['host']
-        self.port = params['port']
-        self.user = params['user']
-        self.password = params['password']
-        self.database = params['database']
-        self.charset = params.get('charset', 'utf8mb4')
+    def __init__(self):
         self.connection = None
         self.cursor = None
-        self.logger = setup_logging()  # 初始化日志记录器
+        self.logger = init_logging  # 初始化日志记录器
 
-    def connect(self):
+    def connect(self, params):
         """连接到MySQL数据库"""
         try:
-            self.connection = pymysql.connect(host=self.host,
-                                              port=self.port,
-                                              user=self.user,
-                                              password=self.password,
-                                              database=self.database,
-                                              charset=self.charset,
+            self.connection = pymysql.connect(host=params['host'],
+                                              port=params['port'],
+                                              user=params['user'],
+                                              password=params['password'],
+                                              database=params['database'],
+                                              charset=params.get('charset', 'utf8mb4'),
                                               cursorclass=pymysql.cursors.DictCursor)
             self.cursor = self.connection.cursor()
             self.logger.info("成功连接到 MySQL 数据库。")
