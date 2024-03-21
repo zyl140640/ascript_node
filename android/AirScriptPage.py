@@ -29,9 +29,11 @@ class AirScriptPages:
         while attempts <= max_attempts:
             self.logger.info(f"尝试查找元素[{selector}]，尝试次数: {attempts}", )
             self.node = selector.find()
-            attempts += 1
+            if self.node:
+                return self.node
+            else:
+                attempts += 1
             time.sleep(interval)
-            return self.node
         self.logger.info(f"未找到元素[{selector}]")
         return None
 
@@ -40,9 +42,11 @@ class AirScriptPages:
         while attempts <= max_attempts:
             self.logger.info(f"尝试查找元素[{selector}]，尝试次数: {attempts}", )
             self.node = selector.find_all()
-            attempts += 1
+            if self.node:
+                return self.node
+            else:
+                attempts += 1
             time.sleep(interval)
-            return self.node
         self.logger.info(f"未找到元素[{selector}]")
         return None
 
@@ -58,9 +62,11 @@ class AirScriptPages:
         while attempts <= max_attempts:
             self.logger.info(f"尝试查找元素，尝试次数: {attempts}", )
             self.node = selector.find()
-            attempts += 1
+            if self.node:
+                return self.node
+            else:
+                attempts += 1
             time.sleep(interval)
-            return self.node
         self.logger.info("未找到元素。")
         return None
 
