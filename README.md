@@ -4,7 +4,10 @@
 
 本教程指导您如何使用 ascript_node 插件
 
-#### 目前已封装操作
+[TOC]
+
+### 目前支持的库
+
 * 控件
 * mysql相关操作
 * Excel相关操作
@@ -12,33 +15,32 @@
 * 发送qq邮箱、钉钉、163邮箱、飞书
 * webSocket通讯方法
 
-### 要求
+-------------------
+### 使用要求
 
 * 安装并配置 AirScript
 * 熟悉 Android UI 层次结构
 * 安装了相关依赖如pymysql openpyxl
 * 不安装也没关系,插件会检测用户是否安装,不安装则无法使用相关依赖;
 
-#### 步骤
-
-### 导入必要的模块
+### 插件引入操作
 
 ```python
 from ascript.android import plug
-
 plug.load("ascript_node")
 from ascript_node import *
 ```
+##控件
 
-### 引用控件方法
-
+### 控件使用示例
 ```python
 from ascript_node import *
-node_page = page()
-node_page.要使用的方法
+
+page.open_()
+page.要使用的方法
 ```
 
-### 常用方法
+### 控件常用方法
 
 您可以使用以下方法与元素交互：
 
@@ -54,7 +56,7 @@ node_page.要使用的方法
 * action_swipe(x, y, x1, y1)：执行滑动操作。
 * action_click(x, y)：执行元素坐标点击操作。
 
-#### Selector 讲解
+### Selector 讲解
 
 ```python
 使用前先讲解一下后续各方法内的selector是填入什么
@@ -66,47 +68,47 @@ Selector(2).type("LinearLayout").find_all()
 去除填入相应方法内即可
 ```
 
-#### 示例
+### 实战示例
 
 ```python
 # 打开应用程序
-pages.open_app("com.example.my_app")
+page.open_app("com.example.my_app")
 
 noeds = Selector(2).type("LinearLayout")
 
 # 查找单个元素并返回其引用。
-pages.find(noeds)
+page.find(noeds)
 
 # 查找所有匹配元素并返回它们的引用列表。
-pages.find_all(noeds)
+page.find_all(noeds)
 
 # 查找并点击按钮
-pages.click(noeds, "登录按钮")
+page.click(noeds, "登录按钮")
 
 # 获取文本输入框的文本
-text = pages.get_text(noeds, "搜索输入框")
+text = page.get_text(noeds, "搜索输入框")
 
 # 在文本输入框中输入文本
-pages.swipe(noeds, "test")
+page.swipe(noeds, "test")
 
 # 随机等待 2 到 5 秒
-pages.random_sleep()
+page.random_sleep()
 
 # 执行返回操作
-pages.action_back()
+page.action_back()
 
 # 执行滑动操作
-pages.action_swipe(100, 100, 200, 200)
+page.action_swipe(100, 100, 200, 200)
 
 # 执行元素坐标点击操作
-pages.action_click(100, 100)
+page.action_click(100, 100)
 
 ```
 
 ### Excel方法使用教程
 
 ### 方法
-
+- **load_workbook('文件名.xlsx')**:  读取文件地址
 - **get_sheet(sheet_name=None)**: 获取工作表
 - **get_cell_value(sheet_name, row, column)**: 获取单元格值
 - **set_cell_value(sheet_name, row, column, value)**: 设置单元格值
@@ -119,27 +121,23 @@ pages.action_click(100, 100)
 
 ```python
 from ascript_node import *
-filename = 'example.xlsx'
-excel_helper = excel(filename)
-
+#初始化要读取文件的地址
+excel.load_workbook('文件名.xlsx')
 # 获取工作表
 sheet = excel_helper.get_sheet()  # 默认获取第一个工作表
-
 # 获取单元格值
 cell_value = excel_helper.get_cell_value('Sheet1', 1, 1)
-
 # 设置单元格值
 excel_helper.set_cell_value('Sheet1', 1, 1, '新值')
-
 # 保存工作簿
 excel_helper.save()
 ```
 
-## MySQL数据库相关操作方法
+## MySQL数据库
 
 ### 方法
 
-- **connect()**: 连接到 MySQL 数据库
+- **connect(params：数据库配置)**: 连接到 MySQL 数据库
 - **execute_query(query, params=None)**: 执行查询操作
 - **execute_update(query, params=None)**: 执行更新操作
 - **execute_insert(query, params=None)**: 执行插入操作
@@ -149,7 +147,6 @@ excel_helper.save()
 ### 用法示例
 
 ```python
-from ascript_node import *
 # 数据库连接参数
 params = {
     'host': 'localhost',
@@ -158,10 +155,8 @@ params = {
     'password': '123456',
     'database': 'test',
 }
-# 初始化 MySQLHelper 对象
-mysql_helper = mysql(params)
 # 连接到数据库
-if mysql_helper.connect():
+if mysql.connect(params):
     # 执行查询操作
     query = 'SELECT * FROM users'
     result = mysql_helper.execute_query(query)
@@ -187,25 +182,26 @@ if mysql_helper.connect():
 ```
 
 ## pandas操作Excel方法总结
+
 ### 引用
+
 ```python
-from ascript_node import *
-excel = pandas_excel()
-excel.要使用的方法
+pandas_excel.要使用的方法
 ```
 
 ### 方法
+
 ```python
 from ascript_node import *
-
-# 创建 ExcelHandler 对象
-excel_handler = pandas_excel('文件路径')
+excel.load_excel('文件名.xlsx')
 
 # 常用操作
-excel_handler.read_excel() #读取 Excel 文件并存储在 DataFrame 中。
-excel_handler.write_excel('新文件路径') # 将 DataFrame 写入 Excel 文件。
-excel_handler.append_excel('新文件路径') #将 DataFrame 追加到 Excel 文件。
-excel_handler.create_pivot_table('行索引', '列索引', '值') #建透视表
+# 加载 Excel 文件
+load_excel('my_workbook.xlsx') #加载excel文件
+excel_handler.read_excel()  # 读取 Excel 文件并存储
+excel_handler.write_excel('新文件路径')  # 将 DataFrame 写入 Excel 文件。
+excel_handler.append_excel('新文件路径')  # 将 DataFrame 追加到 Excel 文件。
+excel_handler.create_pivot_table('行索引', '列索引', '值')  # 建透视表
 
 # 增删改查
 excel_handler.add_row({'列名1': '值1', '列名2': '值2'})
@@ -216,7 +212,7 @@ excel_handler.query_data('列名1 == "值1"')
 # 其它操作
 excel_handler.set_column_names(['新列名1', '新列名2', ...])
 excel_handler.set_row_index(['新索引1', '新索引2', ...])
-excel_handler.sort_data('列名', ascending=True/False)
+excel_handler.sort_data('列名', ascending=True / False)
 excel_handler.drop_duplicates(['列名1', '列名2', ...])
 excel_handler.fillna(0)
 
@@ -228,6 +224,7 @@ excel_handler.fillna(0)
 
 ```python
 from ascript_node import *
+
 # 创建消息发送器实例
 sender = message_sender()
 
@@ -237,19 +234,18 @@ sender.send_email('邮箱账号', '邮箱密码', '收件人邮箱', '邮箱内�
 # 发送钉钉消息
 sender.send_dingding_message('webhook_url', {'content': '钉钉消息内容'})
 # 发送飞书
-sender.send_feishu_message("接口地址",'access_token令牌', {'content': '飞书消息内容'})
+sender.send_feishu_message("接口地址", 'access_token令牌', {'content': '飞书消息内容'})
 
 
 ```
 
-
-## WebSocket 使用教程
+## WebSocket
 
 ```python
 # 使用示例
-from ascript_node import *
-with webSocket_clien("ws://localhost:8000/websocket") as client:
-    client.send("Hello, world!")
+with WebSocketClient() as client:
+    client.connect("ws://localhost:8000")
+    client.send("Hello")
     message = client.receive()
     print(message)
 

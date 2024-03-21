@@ -24,23 +24,27 @@ class AirScriptPages:
             self.logger.info(f"未找到{app_name}应用")
             raise e
 
-    def find(self, selector):
-        try:
+    def find(self, selector, max_attempts=10, interval=1):
+        attempts = 1
+        while attempts <= max_attempts:
+            self.logger.info(f"尝试查找元素[{selector}]，尝试次数: {attempts}", )
             self.node = selector.find()
-            self.logger.info("查找页面元素")
+            attempts += 1
+            time.sleep(interval)
             return self.node
-        except Exception as e:
-            self.logger.info(f"未找到元素[{selector}],报错内容: {e}")
-            return None
+        self.logger.info(f"未找到元素[{selector}]")
+        return None
 
-    def find_all(self, selector):
-        try:
+    def find_all(self, selector, max_attempts=10, interval=1):
+        attempts = 1
+        while attempts <= max_attempts:
+            self.logger.info(f"尝试查找元素[{selector}]，尝试次数: {attempts}", )
             self.node = selector.find_all()
-            self.logger.info("查找页面所有相同元素")
+            attempts += 1
+            time.sleep(interval)
             return self.node
-        except Exception as e:
-            self.logger.info(f"未找到元素[{selector}],报错内容: {e}")
-            return None
+        self.logger.info(f"未找到元素[{selector}]")
+        return None
 
     def wait_for_selector(self, selector, max_attempts=10, interval=1):
         """
@@ -54,10 +58,9 @@ class AirScriptPages:
         while attempts <= max_attempts:
             self.logger.info(f"尝试查找元素，尝试次数: {attempts}", )
             self.node = selector.find()
-            if self.node:
-                return self.node
             attempts += 1
             time.sleep(interval)
+            return self.node
         self.logger.info("未找到元素。")
         return None
 
@@ -75,6 +78,22 @@ class AirScriptPages:
             return self.node
         except Exception as e:
             self.logger.info(f"点击元素 [{selector}] 时报错,报错内容: {e}")
+
+    def input(self, selector, inputs, text=None):
+        """
+        元素点击
+        :param inputs:
+        :param selector:
+        :param text:
+        :return:
+        """
+        try:
+            self.node = self.wait_for_selector(selector)
+            self.node.input(inputs)
+            self.logger.info(f"输入: [{inputs}]")
+            return self.node
+        except Exception as e:
+            self.logger.info(f"输入 [{selector}] 时报错,报错内容: {e}")
 
     def long_click(self, selector, text=None):
         """
@@ -122,12 +141,12 @@ class AirScriptPages:
 
     def action_back(self):
         self.result = action.Key.back()
-        self.logger.info("执行返回操作")
+        self.logger.info("执行物理返回操作")
 
     def action_swipe(self, x, y, x1, y1):
         self.result = action.swipe(x, y, x1, y1)
-        self.logger.info("执行滑动操作")
+        self.logger.info("执行模拟滑动操作")
 
     def action_click(self, x, y):
         self.result = action.click(x, y)
-        self.logger.info("执行元素坐标点击操作")
+        self.logger.info("执行坐标点击操作")
